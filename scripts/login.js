@@ -153,7 +153,7 @@ const login=()=>{
 
     for(let i=0;i<allUsers.length;i++){
         if(oldUser.username.toLowerCase()==allUsers[i].username.toLowerCase() || oldUser.password===allUsers[i].password){
-            window.localStorage.setItem('session',JSON.stringify(newUser));
+            window.localStorage.setItem('session',JSON.stringify(allUsers[i]));
             window.location.assign('/');
             break;
         }
