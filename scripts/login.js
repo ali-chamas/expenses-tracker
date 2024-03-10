@@ -131,19 +131,24 @@ const login=()=>{
 
     for(let i=0;i<allUsers.length;i++){
         if(oldUser.username.toLowerCase()==allUsers[i].username.toLowerCase() || oldUser.password===allUsers[i].password){
+            
+            error=false;
             window.localStorage.setItem('session',JSON.stringify(allUsers[i]));
             window.location.assign('/');
-            break;
+            return;
+            
         }
         else{
             error=true;
         }
     }
     
-  
+  if(error=true){
+    
         resetOldUser()
         resetInputs()
         displayLoginError('wrong email or password')
+  }
 }
     
     

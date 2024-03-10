@@ -21,6 +21,7 @@ const incomeName=document.getElementById('income-name')
 const incomeAmount=document.getElementById('income-amount')
 const incomeBtn=document.getElementById('income-adder')
 const infoPopup=document.getElementById('info-popup');
+const logouBtn=document.getElementById('logout-btn')
 
 
 //localstorage
@@ -370,6 +371,10 @@ const editFinance=async(id,name,amount,currency)=>{
     loader()
 }
 
+const logout=()=>{
+    window.localStorage.setItem('session','loggedOut');
+    window.location.assign('/')
+}
 
 
 const app=async()=>{
@@ -388,7 +393,7 @@ const app=async()=>{
 
         
         activeCurrency=JSON.parse(window.localStorage.getItem('activeCurrency'));
-        
+        logouBtn.addEventListener('click',logout)
         currencyBtns=document.querySelectorAll('.currency-btn')
         await setAllAmounts();
         currencyBtns.forEach((btn)=>{

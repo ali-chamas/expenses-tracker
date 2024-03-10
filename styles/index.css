@@ -37,7 +37,7 @@ header button{
 }
 
 header img{
-    width: 150px;
+    width: 100px;
     border-radius: 50%;
 }
 
@@ -199,6 +199,11 @@ form input{
     font-size: 15px;
 }
 
+.logout-btn{
+    
+    font-size: 12px;
+}
+
 @media (max-width:930px){
     header span{
         display: none;
@@ -253,6 +258,11 @@ form input{
 
     .user-info p{
         font-size: 9px;
+    }
+
+    .logout-btn{
+        font-size: 8px;
+        
     }
     
    
