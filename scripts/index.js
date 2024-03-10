@@ -27,7 +27,8 @@ let currencyBtns=[];
 let finances=[];
 let activeCurrency={};
 
-let editPopup={}
+let editPopup={};
+let confirmEdit={};
 
 const fetchCurrencies=async()=>{
 
@@ -202,6 +203,7 @@ const fillCurrencies=()=>{
 }
 
 const formAdders=()=>{
+    
     let expense={
         id:finances.length+1,
         name:'',
@@ -243,6 +245,9 @@ const addFinance=(finance)=>{
 
 
 const openInfo=async(id)=>{
+    let newName='';
+    let newAmount=0;
+    let newCurrency='USD';
     let finance={};
     finances.forEach(fin=>{
         if(fin.id==id)
@@ -265,17 +270,39 @@ const openInfo=async(id)=>{
                 <form class=" column gap editor-popup" id="edit-popup">
                     <input type="text" placeholder="new name" id="new-name">
                     <input type="number" placeholder="new amount" id="new-amount">
+                    <select  id="select-edit">
+                
+                    </select>
                     <button type="button" class="btn-style active" id="confirm-edit">confirm</button>
                 </form>
 
             </div>`
    
      const exitBtn=document.getElementById('exit-btn');
+     
      editPopup=document.getElementById('edit-popup');
-     exitBtn.addEventListener('click',closePopup)       
-    infoPopup.classList.add('flex');
+     const confirmEdit=document.getElementById('confirm-edit');
+     const editName=document.getElementById('new-name');
+     const editAmount=document.getElementById('new-amount');
+     const editCurrency=document.getElementById('select-edit');
+
+     //fill currencies in select
+     currencies.forEach(curr=>{
+        editCurrency.innerHTML+=`<option value='${curr.code}'>${curr.code}</option>`
+     })
+
+
+     editName.addEventListener('change',(e)=>newName=e.target.value);
+     editAmount.addEventListener('change',(e)=>newAmount=e.target.value);
+     editCurrency.addEventListener('change',(e)=>newCurrency=e.target.value);
+     confirmEdit.addEventListener('click',()=>editFinance(finance.id,newName,newAmount,newCurrency))
+     
+     exitBtn.addEventListener('click',closePopup);   
+     infoPopup.classList.add('flex');
 
 }
+
+
 
 const closePopup=()=>{
     infoPopup.classList.remove('flex')
@@ -292,6 +319,20 @@ const deleteFinance=async(param)=>{
 
 const openEditPopup=()=>{
     editPopup.classList.toggle('flex')
+}
+
+const editFinance=async(id,name,amount,currency)=>{
+    loader()
+    finances.map(fin=>{
+        if(fin.id==id){
+            fin.name=name;
+            fin.amount=amount;
+            fin.currency=currency;
+        }
+    })
+    window.localStorage.setItem('finances',JSON.stringify(finances));
+    await setAllAmounts()
+    loader()
 }
 
 const app=async()=>{
@@ -320,7 +361,7 @@ const app=async()=>{
         })
         fillCurrencies()
         formAdders()
-        const singleFinances=document.querySelectorAll('.single-finance');
+        
        
 
     loader()
