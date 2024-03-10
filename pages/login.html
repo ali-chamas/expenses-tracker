@@ -13,19 +13,19 @@
     <section class="w-full h-full flex center ">
         <form class="primary-bg flex column align-center gap" id="login-form">
             <h2 class="text-primary">Login</h2>
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-            <button class="btn-style active">Login</button>
-            <small class="text-red login-error">wrong email or password</small>
+            <input type="text" placeholder="username" id="username-login">
+            <input type="password" placeholder="password" id="pass-login">
+            <button type="button" class="btn-style active" id="login-btn">Login</button>
+            <small class="text-red " id="login-error"></small>
             <small class="text-gray">new here? <span class="switch text-primary" id="signup-switch">Sign up</span></small>
         </form>
         <form class="primary-bg flex column align-center gap" id="signup-form">
             <h2 class="text-primary">Sign Up</h2>
-            <input type="text" placeholder="full name">
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-            <button class="btn-style active">Sign Up</button>
-            <small class="text-red login-error">wrong email or password</small>
+            <input type="text" placeholder="full name" id="name-signup">
+            <input type="text" placeholder="username" id="username-signup">
+            <input type="password" placeholder="password" id="pass-signup">
+            <button type="button" class="btn-style active" id="signup-btn">Sign Up</button>
+            <small class="text-red " id="signup-error"></small>
             <small class="text-gray">Already have an account? <span class="switch text-primary" id="login-switch">login</span></small>
         </form>
     </section>

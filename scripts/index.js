@@ -1,3 +1,12 @@
+
+
+//Auth
+const session = window.localStorage.getItem('session');
+
+if(!session || session=='loggedOut'){
+    window.location.assign('/pages/login.html')
+}
+
 const currenciesContainer=document.getElementById('currencies-container');
 const amountsContainer=document.getElementById('amounts-container')
 const financesContainer=document.getElementById('finances-container')
@@ -14,9 +23,13 @@ const incomeBtn=document.getElementById('income-adder')
 const infoPopup=document.getElementById('info-popup');
 
 
-
 //localstorage
-const fetchedFinances=window.localStorage.getItem('finances');
+const user = JSON.parse(window.localStorage.getItem('session'))
+const users = JSON.parse(window.localStorage.getItem('users'))
+
+
+
+
 const fetchedCurrency=window.localStorage.getItem('activeCurrency')
 
 let currencies=[];
@@ -24,7 +37,7 @@ let currencies=[];
 let totalExpenses=0;
 let totalIncomes=0;
 let currencyBtns=[];
-let finances=[];
+let finances=user.finances;
 let activeCurrency={};
 
 let editPopup={};
