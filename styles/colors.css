@@ -1,0 +1,21 @@
+.primary-bg{
+    background-color:#0389b210;
+}
+.secondary-bg{
+    background-color: #0389b222;
+}
+
+.text-red{
+    color: rgb(201, 0, 0);
+}
+.text-green{
+    color: green;
+}
+
+.bg-danger{
+    background-color: rgb(201, 0, 0);
+}
+
+.text-white{
+    color: white;
+}

@@ -1,0 +1,252 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body{
+    display: flex;
+    gap: 30px;
+}
+
+button{
+    border: none;
+}
+
+section{
+    width: 80vw;
+    padding: 35px 20px;
+}
+
+header{
+    height: 100vh;
+    width: 20vw;
+    border-radius: 0 30px 30px 0;
+    padding: 0 2vw;
+    justify-content:space-evenly ;
+    
+
+}
+
+header button{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+header>img{
+    width: 150px;
+    border-radius: 50%;
+}
+
+
+.currencies-container{
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.currencies-container button{
+    border-radius: 50%;
+    padding: 10px;
+    font-weight: bold;
+    width: 35px;
+    font-size: 10px;
+    
+}
+.currencies-container button:hover{
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+.active{
+    background-color:#0389b2e9;
+    color: white;
+}
+
+.amounts-container{
+    flex-wrap: wrap;
+    gap: 30px;
+    align-self: center;
+    justify-content: center;
+    
+}
+
+
+
+.amounts-container h2{
+    font-size: 20px;
+}
+
+.amounts-container>div{
+    padding: 20px;
+    border-radius: 30px;
+}
+.filter-btn{
+    align-self: flex-end;
+    padding: 5px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.finances-container{
+    padding-top: 20px;
+    max-height: 340px;
+    overflow-y: auto;
+}
+
+.finances-container>div{
+    padding: 15px 20px;
+    border: 1px solid #0389b22d;
+}
+.finances-container>div:hover{
+    opacity: 0.80;
+    cursor: pointer;
+}
+
+.finances-container>div:nth-child(odd){
+    background-color: #0389b210;
+}
+
+.finances-container>div small{
+    color: gray;
+    font-size: 12px;
+}
+
+.finances-container>div p{
+    font-size: 14px;
+}
+
+.popup{
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.386);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+form{
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    gap: 30px;
+    position: relative;
+    display: flex;
+}
+
+form h2{
+    font-size: 20px;
+}
+
+form input{
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid gainsboro;
+}
+
+.exit-form{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+    background-color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.info-popup{
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    gap: 30px;
+    position: relative;
+    max-width: 350px;
+}
+.info-popup h2{
+   font-size: 20px;
+}
+
+.finance-desc{
+    background-color: rgba(220, 220, 220, 0.347);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.loader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.299);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor-popup{
+    display: none;
+}
+
+
+@media (max-width:930px){
+    header span{
+        display: none;
+    }
+    header img{
+        width: 15vw;
+        min-width: 45px;
+    }
+    .amounts-container h2{
+        font-size: 18px;
+    }
+}
+
+@media (max-width:568px){
+   header{
+        justify-content: space-evenly;
+        gap: 10px;
+   }
+ 
+   .amounts-container h2{
+        font-size: 12px;
+    }
+    .amounts-container p{
+        font-size: 12px;
+    }
+
+    .amounts-container{
+        flex-wrap: wrap;
+        gap: 10px;
+        align-self: center;
+        
+    }
+    
+    
+    .amounts-container>div{
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+    .filter-btn{
+        font-size: 10px;
+    }
+    .finances-container>div p{
+        font-size: 10px;
+    }
+    .finances-container>div small{
+        font-size: 7px;
+    }
+    .finances-container>div i{
+        font-size: 10px;
+    }
+    
+   
+}

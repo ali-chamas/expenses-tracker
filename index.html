@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/colors.css">
+    <link rel="stylesheet" href="./styles/utilities.css">
+
+    <title>my financialist</title>
+    <script src="https://kit.fontawesome.com/96cf59c222.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header class="primary-bg flex column align-center">
+        <img src="https://i.pinimg.com/originals/6d/5f/c6/6d5fc60bae3dc6139eefa31af206596f.jpg" alt="">
+        <div class="flex column gap w-full">
+            
+            <button class="btn-style secondary-bg w-full" id="open-expense"><span>Add Expense</span> <i class="fa-solid fa-arrow-trend-down"></i></button>
+            <button class="btn-style secondary-bg w-full" id="open-income"><span>Add Income</span> <i class="fa-solid fa-arrow-trend-up"></i></button>
+        </div>
+        <div class="currencies-container flex gap" id="currencies-container">
+        </div>
+        
+    </header>
+    
+    <section class="flex column w-full gap home-page">
+
+        <div class="flex amounts-container " id="amounts-container">
+        </div>
+
+        <select id="filter-btn" class="filter-btn">
+            <option value="all">All</option>
+            <option value="expenses">Expenses</option>
+            <option value="incomes">Incomes</option>
+        </select>
+
+        <div class="finances-container flex column w-full align-center" id="finances-container">
+           
+            
+           
+        </div>
+
+    </section>
+    
+    <div class="loader" id="loader">
+        
+    </div>
+
+    <div class="popup" id="expense-popup">
+
+        <form class=" column align-center">
+
+            <h2>Add an expense</h2>
+            <input type="text" placeholder="name" id="expense-name">
+            <input type="number" placeholder="amount" id="expense-amount">
+            <select  id="select-expense">
+
+            </select>
+            <button type="button" class="btn-style active" id="expense-adder">Add</button>
+            <button type="button" class="exit-form text-red" ><i class="fa-solid fa-x"></i></button>
+        </form>
+
+        
+            
+    </div>
+
+    <div class="popup" id="income-popup">
+        <form class=" column align-center">
+
+            <h2>Add an income</h2>
+            <input type="text" placeholder="name" id="income-name">
+            <input type="number" placeholder="amount" id="income-amount">
+            <select  id="select-income">
+                
+            </select>
+            <button type="button" class="btn-style active" id="income-adder">Add</button>
+            <button type="button" class="exit-form text-red" ><i class="fa-solid fa-x"></i></button>
+        </form>
+    </div>
+
+    <div class="popup" id="info-popup"> 
+        
+    </div>
+
+    
+    <script src="./scripts/models/finances.js"></script>
+    <script src="./scripts/index.js"></script>
+    <script src="./scripts/popups.js"></script>
+</body>
+</html>

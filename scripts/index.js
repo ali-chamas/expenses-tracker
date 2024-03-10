@@ -1,0 +1,332 @@
+const currenciesContainer=document.getElementById('currencies-container');
+const amountsContainer=document.getElementById('amounts-container')
+const financesContainer=document.getElementById('finances-container')
+const loaderSection=document.getElementById('loader')
+const filterBtn=document.getElementById('filter-btn');
+const selectExpense=document.getElementById('select-expense')
+const selectIncome=document.getElementById('select-income')
+const expenseName=document.getElementById('expense-name')
+const expenseAmount=document.getElementById('expense-amount')
+const expenseBtn=document.getElementById('expense-adder')
+const incomeName=document.getElementById('income-name')
+const incomeAmount=document.getElementById('income-amount')
+const incomeBtn=document.getElementById('income-adder')
+const infoPopup=document.getElementById('info-popup');
+
+
+
+//localstorage
+const fetchedFinances=window.localStorage.getItem('finances');
+const fetchedCurrency=window.localStorage.getItem('activeCurrency')
+
+let currencies=[];
+
+let totalExpenses=0;
+let totalIncomes=0;
+let currencyBtns=[];
+let finances=[];
+let activeCurrency={};
+
+let editPopup={}
+
+const fetchCurrencies=async()=>{
+
+    try {
+        const res = await fetch('https://crowded-cyan-wildebeest.cyclic.app/students/available');
+        currencies=await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+
+    currencies.forEach(curr=> 
+        currenciesContainer.innerHTML+=`<button class="secondary-bg currency-btn">${curr.symbol}</button>`)
+   
+    
+}
+
+
+
+
+
+const setActiveCurrency=(btns)=>{
+    activeCurrency&&
+    btns.forEach(curr=>{
+        if(curr.innerHTML==activeCurrency.symbol){
+        curr.classList.remove('secondary-bg')
+        curr.classList.add('active')
+        }
+        else{
+        curr.classList.add('secondary-bg')
+        curr.classList.remove('active')
+        }
+    })
+}
+
+const convertAmount=async(from,to,amount)=>{
+    const data={"from":from,"to":to,"amount":amount}
+    try {
+        const res = await fetch('https://crowded-cyan-wildebeest.cyclic.app/students/convert',
+        {
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(data),
+           
+        })
+        return await res.json();
+    } catch (error) {
+        console.log(error)
+    }
+  
+}
+
+
+
+const getTotal=async()=>{
+    totalExpenses=0;
+    totalIncomes=0;
+   
+        for(let i=0;i<finances.length;i++){
+            if(finances[i].type=='expense'){
+                totalExpenses+=await convertAmount(finances[i].currency,activeCurrency.code,finances[i].amount)
+            }
+            else{
+                totalIncomes+=await convertAmount(finances[i].currency,activeCurrency.code,finances[i].amount)
+            }
+        }
+}
+
+
+const formatDouble=(num)=>{
+    return (Math.round(num * 100) / 100).toFixed(2);
+}
+
+const setAmounts=()=>{
+    amountsContainer.innerHTML='';
+    let types=[
+       {title:'expenses',amount:formatDouble(totalExpenses),icon:'<i class="fa-solid fa-arrow-trend-down"></i>'},
+       {title:'incomes',amount:formatDouble(totalIncomes),icon:'<i class="fa-solid fa-arrow-trend-up"></i>'},
+       {title:'balance',amount:formatDouble(totalIncomes-totalExpenses),icon:'<i class="fa-solid fa-scale-balanced"></i>'}
+    ]
+
+    types.forEach(type=>
+        amountsContainer.innerHTML+=`<div class="flex column gap align-center primary-bg">
+                                    <h2>${type.title} ${type.icon} </h2>
+                                    <p class='${type.title=='expenses'||type.amount<=0 ?'text-red':'text-green'}'>${type.amount} ${activeCurrency.symbol}<p/>
+                                </div>`
+    )
+    
+}
+
+
+const setFinances=async(array)=>{
+    financesContainer.innerHTML='';
+    for(let i=0;i<array.length;i++){
+            financesContainer.innerHTML+=` <div class="w-full flex justify-between align-center single-finance" onClick='openInfo(${array[i].id})'>
+                                            <div class="flex gap align-center">
+                                                <p>${array[i].name}</p>
+                                                <small>${array[i].date}</small>
+                                            </div>
+
+                                            <div class="flex gap align-center ${array[i].type=='expense'?'text-red':'text-green'}">
+                                                <p>${formatDouble(await convertAmount(array[i].currency,activeCurrency.code,array[i].amount))}<span>${activeCurrency.symbol}</span></p> 
+                                                ${array[i].type=='expense'?'<i class="fa-solid fa-arrow-trend-down"></i>':'<i class="fa-solid fa-arrow-trend-up"></i>'}</i>
+                                            </div>
+                                            
+                                        </div>`
+    }
+}
+
+const loader=()=>{
+    loaderSection.classList.toggle('flex')
+}
+
+const setAllAmounts=async()=>{
+    
+    setActiveCurrency(currencyBtns)
+    await getTotal();
+    setAmounts();
+    await setFinances(finances);
+    
+}
+
+const changeActiveCurrency=async(symbol)=>{
+    loader()
+    currencies.forEach(curr=>{
+        if(curr.symbol==symbol)
+        activeCurrency=curr;
+    })
+    window.localStorage.setItem('activeCurrency',JSON.stringify(activeCurrency))
+    await setAllAmounts()
+    console.log(finances)
+    loader()
+}
+
+const filterFinances=async(value)=>{
+    loader()
+    let filteredFinances=[]
+    if(value=='expenses'){
+        filteredFinances=finances.filter((finance)=>
+            finance.type=='expense'
+        )
+        
+    }else if(value=='incomes'){
+        filteredFinances=finances.filter((finance)=>
+            finance.type=='income'
+        )
+    }else{
+        filteredFinances=finances;
+    }
+
+    await setFinances(filteredFinances)
+    
+    loader()
+}
+
+
+//forms
+
+const fillCurrencies=()=>{
+
+    currencies.forEach(curr=>{
+        selectExpense.innerHTML+=`<option value="${curr.code}">
+                                        ${curr.code}
+                                   </option>`
+        selectIncome.innerHTML+=`<option value="${curr.code}">
+                                        ${curr.code}
+                                   </option>`
+        
+    })
+    
+}
+
+const formAdders=()=>{
+    let expense={
+        id:finances.length+1,
+        name:'',
+        amount:0,
+        currency:'USD',
+        type:'expense',
+        date:new Date().toLocaleDateString()
+    }
+
+    let income={
+        id:finances.length+1,
+        name:'',
+        amount:0,
+        currency:'USD',
+        type:'income',
+        date:new Date().toLocaleDateString()
+    }
+
+    expenseName.addEventListener('change',(e)=>expense.name=e.target.value);
+    expenseAmount.addEventListener('change',(e)=>expense.amount=e.target.value);
+    incomeName.addEventListener('change',(e)=>income.name=e.target.value);
+    incomeAmount.addEventListener('change',(e)=>income.amount=e.target.value);
+    selectExpense.addEventListener('change',(e)=>expense.currency=e.target.value)
+    selectIncome.addEventListener('change',(e)=>income.currency=e.target.value)
+
+
+    expenseBtn.addEventListener('click',()=>addFinance(expense))
+    incomeBtn.addEventListener('click',()=>addFinance(income))
+
+    
+    
+}
+
+const addFinance=(finance)=>{
+    finances.push(finance);
+    window.localStorage.setItem('finances',JSON.stringify(finances));
+    setAllAmounts()
+}
+
+
+const openInfo=async(id)=>{
+    let finance={};
+    finances.forEach(fin=>{
+        if(fin.id==id)
+            finance=fin;
+    })
+    infoPopup.innerHTML=`<div class="info-popup flex column center">
+                <div class="flex gap align-center">
+                    <div class="flex column gap">
+                        <h2>${finance.name}</h2>
+                        <small>${finance.date}</small>
+                    </div>
+                    <p>${formatDouble(await convertAmount(finance.currency,activeCurrency.code,finance.amount))}<span>${activeCurrency.symbol}</span></p>
+                </div>
+                <div class="flex gap">
+                    <button class="btn-style bg-secondary"  onClick='openEditPopup()'>Edit <i class="fa-solid fa-pen"></i></button>
+                    <button class="btn-style bg-danger text-white" onClick='deleteFinance(${finance.id})'>Delete <i class="fa-solid fa-trash" ></i></button>
+                </div>
+            
+                <button type="button" class="exit-form text-red" id='exit-btn' ><i class="fa-solid fa-x"  ></i></button>
+                <form class=" column gap editor-popup" id="edit-popup">
+                    <input type="text" placeholder="new name" id="new-name">
+                    <input type="number" placeholder="new amount" id="new-amount">
+                    <button type="button" class="btn-style active" id="confirm-edit">confirm</button>
+                </form>
+
+            </div>`
+   
+     const exitBtn=document.getElementById('exit-btn');
+     editPopup=document.getElementById('edit-popup');
+     exitBtn.addEventListener('click',closePopup)       
+    infoPopup.classList.add('flex');
+
+}
+
+const closePopup=()=>{
+    infoPopup.classList.remove('flex')
+}
+
+const deleteFinance=async(param)=>{
+    loader()
+    finances=finances.filter(fin=>fin.id!=param);
+    window.localStorage.setItem('finances',JSON.stringify(finances))
+    infoPopup.classList.remove('flex')
+    await setAllAmounts()
+    loader()
+}
+
+const openEditPopup=()=>{
+    editPopup.classList.toggle('flex')
+}
+
+const app=async()=>{
+
+    loader()
+        //do all the fetching before the loader ends
+        await fetchCurrencies();
+        
+        if(!fetchedCurrency){
+            window.localStorage.setItem('activeCurrency',JSON.stringify(currencies[0]))
+        }
+
+        if(!fetchedFinances){
+            window.localStorage.setItem('finances',JSON.stringify(financesModel));
+        }
+        finances=JSON.parse(fetchedFinances);
+        activeCurrency=JSON.parse(fetchedCurrency);
+        
+        currencyBtns=document.querySelectorAll('.currency-btn')
+        await setAllAmounts()
+        currencyBtns.forEach((btn)=>{
+            btn.addEventListener('click',async()=>await changeActiveCurrency(btn.innerHTML))
+        })
+        filterBtn.addEventListener('change',async(e)=>{
+            await filterFinances(e.target.value)
+        })
+        fillCurrencies()
+        formAdders()
+        const singleFinances=document.querySelectorAll('.single-finance');
+       
+
+    loader()
+    
+
+}
+
+app()
+
