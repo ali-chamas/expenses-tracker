@@ -60,8 +60,6 @@ const fetchCurrencies=async()=>{
 }
 
 
-console.log(users)
-console.log(user);
 
 
 
@@ -255,7 +253,6 @@ const formAdders=()=>{
     
 }
 
-console.log(window.localStorage.getItem('users'))
 const addFinance=(finance)=>{
 
     finances.push(finance);
@@ -266,7 +263,7 @@ const addFinance=(finance)=>{
         if(u.username==user.username)
         u.finances=user.finances;
     })
-    console.log(users)
+   
     window.localStorage.setItem('users',JSON.stringify(users));
     resetFinances()
     setAllAmounts()
