@@ -47,7 +47,7 @@ let confirmEdit={};
 const fetchCurrencies=async()=>{
 
     try {
-        const res = await fetch('https://crowded-cyan-wildebeest.cyclic.app/students/available');
+        const res = await fetch('https://rich-erin-angler-hem.cyclic.app/students/available');
         currencies=await res.json();
     } catch (error) {
         console.log(error);
@@ -82,7 +82,7 @@ const setActiveCurrency=(btns)=>{
 const convertAmount=async(from,to,amount)=>{
     const data={"from":from,"to":to,"amount":amount}
     try {
-        const res = await fetch('https://crowded-cyan-wildebeest.cyclic.app/students/convert',
+        const res = await fetch('https://rich-erin-angler-hem.cyclic.app/students/convert',
         {
             method:"POST",
             headers:{
@@ -201,6 +201,7 @@ const filterFinances=async(value)=>{
 }
 
 
+
 //forms
 
 const fillCurrencies=()=>{
@@ -217,25 +218,27 @@ const fillCurrencies=()=>{
     
 }
 
+let expense={
+    id:Math.floor(Math.random()*9999999),
+    name:'',
+    amount:0,
+    currency:'USD',
+    type:'expense',
+    date:new Date().toLocaleDateString()
+}
+
+let income={
+    id:Math.floor(Math.random()*9999999),
+    name:'',
+    amount:0,
+    currency:'USD',
+    type:'income',
+    date:new Date().toLocaleDateString()
+}
+
 const formAdders=()=>{
     
-    let expense={
-        id:Math.floor(Math.random()*190287),
-        name:'',
-        amount:0,
-        currency:'USD',
-        type:'expense',
-        date:new Date().toLocaleDateString()
-    }
-
-    let income={
-        id:Math.floor(Math.random()*190287),
-        name:'',
-        amount:0,
-        currency:'USD',
-        type:'income',
-        date:new Date().toLocaleDateString()
-    }
+    
 
     expenseName.addEventListener('change',(e)=>expense.name=e.target.value);
     expenseAmount.addEventListener('change',(e)=>expense.amount=e.target.value);
@@ -252,17 +255,40 @@ const formAdders=()=>{
     
 }
 
+console.log(window.localStorage.getItem('users'))
 const addFinance=(finance)=>{
+
     finances.push(finance);
     user.finances=finances;
     window.localStorage.setItem('session',JSON.stringify(user))
 
     users.map(u=>{
         if(u.username==user.username)
-        u=user
+        u.finances=user.finances;
     })
+    console.log(users)
     window.localStorage.setItem('users',JSON.stringify(users));
+    resetFinances()
     setAllAmounts()
+}
+
+const resetFinances=()=>{
+    expense={
+        id:Math.floor(Math.random()*9999999),
+        name:'',
+        amount:0,
+        currency:'USD',
+        type:'expense',
+        date:new Date().toLocaleDateString()}
+    
+    income={
+        id:Math.floor(Math.random()*9999999),
+        name:'',
+        amount:0,
+        currency:'USD',
+        type:'income',
+        date:new Date().toLocaleDateString()
+    }
 }
 
 
@@ -330,15 +356,15 @@ const closePopup=()=>{
     infoPopup.classList.remove('flex')
 }
 
-const deleteFinance=async(param)=>{
+const deleteFinance=async(id)=>{
     loader()
-    finances=finances.filter(fin=>fin.id!=param);
+    finances=finances.filter(fin=>fin.id!=id);
     user.finances=finances;
     window.localStorage.setItem('session',JSON.stringify(user))
 
     users.map(u=>{
         if(u.username==user.username)
-        u=user
+        u.finances=user.finances;
     })
     window.localStorage.setItem('users',JSON.stringify(users))
 
@@ -362,10 +388,10 @@ const editFinance=async(id,name,amount,currency)=>{
     })
     user.finances=finances
     window.localStorage.setItem('session',JSON.stringify(user));
-    users.forEach(u=>{
+    users.map(u=>{
         if(u.username==user.username)
-        u=user
-    });
+        u.finances=user.finances;
+    })
     window.localStorage.setItem('users',JSON.stringify(users));
     await setAllAmounts()
     loader()
