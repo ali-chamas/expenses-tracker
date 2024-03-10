@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my financialist</title>
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../styles/utilities.css">
+    <link rel="stylesheet" href="../styles/pages/login.css">
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <section class="w-full h-full flex center ">
+        <form class="primary-bg flex column align-center gap" id="login-form">
+            <h2 class="text-primary">Login</h2>
+            <input type="text" placeholder="username">
+            <input type="password" placeholder="password">
+            <button class="btn-style active">Login</button>
+            <small class="text-red login-error">wrong email or password</small>
+            <small class="text-gray">new here? <span class="signup-switch text-primary">Sign up</span></small>
+        </form>
+        <form class="primary-bg flex column align-center gap" id="signup-form">
+            <h2 class="text-primary">Sign Up</h2>
+            <input type="text" placeholder="full name">
+            <input type="text" placeholder="username">
+            <input type="password" placeholder="password">
+            <button class="btn-style active">Sign Up</button>
+            <small class="text-red login-error">wrong email or password</small>
+            <small class="text-gray">new here? <span class="signup-switch text-primary">Sign up</span></small>
+        </form>
+    </section>
+
+    <script src="../scripts/login.js"></script>
+</body>
+</html>
