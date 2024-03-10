@@ -160,7 +160,6 @@ const changeActiveCurrency=async(symbol)=>{
     })
     window.localStorage.setItem('activeCurrency',JSON.stringify(activeCurrency))
     await setAllAmounts()
-    console.log(finances)
     loader()
 }
 
@@ -205,7 +204,7 @@ const fillCurrencies=()=>{
 const formAdders=()=>{
     
     let expense={
-        id:finances.length+1,
+        id:Math.floor(Math.random()*190287),
         name:'',
         amount:0,
         currency:'USD',
@@ -214,7 +213,7 @@ const formAdders=()=>{
     }
 
     let income={
-        id:finances.length+1,
+        id:Math.floor(Math.random()*190287),
         name:'',
         amount:0,
         currency:'USD',
