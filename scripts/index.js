@@ -59,6 +59,8 @@ const fetchCurrencies=async()=>{
 }
 
 
+console.log(users)
+console.log(user);
 
 
 
@@ -251,7 +253,14 @@ const formAdders=()=>{
 
 const addFinance=(finance)=>{
     finances.push(finance);
-    window.localStorage.setItem('finances',JSON.stringify(finances));
+    user.finances=finances;
+    window.localStorage.setItem('session',JSON.stringify(user))
+
+    users.map(u=>{
+        if(u.username==user.username)
+        u=user
+    })
+    window.localStorage.setItem('users',JSON.stringify(users));
     setAllAmounts()
 }
 
@@ -323,7 +332,15 @@ const closePopup=()=>{
 const deleteFinance=async(param)=>{
     loader()
     finances=finances.filter(fin=>fin.id!=param);
-    window.localStorage.setItem('finances',JSON.stringify(finances))
+    user.finances=finances;
+    window.localStorage.setItem('session',JSON.stringify(user))
+
+    users.map(u=>{
+        if(u.username==user.username)
+        u=user
+    })
+    window.localStorage.setItem('users',JSON.stringify(users))
+
     infoPopup.classList.remove('flex')
     await setAllAmounts()
     loader()
@@ -342,10 +359,18 @@ const editFinance=async(id,name,amount,currency)=>{
             fin.currency=currency;
         }
     })
-    window.localStorage.setItem('finances',JSON.stringify(finances));
+    user.finances=finances
+    window.localStorage.setItem('session',JSON.stringify(user));
+    users.forEach(u=>{
+        if(u.username==user.username)
+        u=user
+    });
+    window.localStorage.setItem('users',JSON.stringify(users));
     await setAllAmounts()
     loader()
 }
+
+
 
 const app=async()=>{
 
@@ -354,23 +379,27 @@ const app=async()=>{
         await fetchCurrencies();
         
         if(!fetchedCurrency){
-            window.localStorage.setItem('activeCurrency',JSON.stringify(currencies[0]))
+            if(currencies.length>0)
+                window.localStorage.setItem('activeCurrency',JSON.stringify(currencies[0]));
+            else
+            window.localStorage.setItem('activeCurrency',JSON.stringify({code:'USD',symbol:'$'}));
+            
         }
 
-        if(!fetchedFinances){
-            window.localStorage.setItem('finances',JSON.stringify(financesModel));
-        }
-        finances=JSON.parse(fetchedFinances);
-        activeCurrency=JSON.parse(fetchedCurrency);
+        
+        activeCurrency=JSON.parse(window.localStorage.getItem('activeCurrency'));
         
         currencyBtns=document.querySelectorAll('.currency-btn')
-        await setAllAmounts()
+        await setAllAmounts();
         currencyBtns.forEach((btn)=>{
             btn.addEventListener('click',async()=>await changeActiveCurrency(btn.innerHTML))
         })
         filterBtn.addEventListener('change',async(e)=>{
             await filterFinances(e.target.value)
         })
+
+        const username = document.getElementById('username');
+        username.innerHTML=user.username
         fillCurrencies()
         formAdders()
         

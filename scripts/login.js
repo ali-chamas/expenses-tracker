@@ -70,29 +70,7 @@ loginSwitch.addEventListener('click',()=>{
 
 
 
-usernameLoginInput.addEventListener('change',(e)=>{
-    oldUser.username=e.target.value;
-})
 
-passwordLoginInput.addEventListener('change',(e)=>{
-    oldUser.password=e.target.value;
-})
-
-nameSignupInput.addEventListener('change',(e)=>{
-    newUser.name=e.target.value;
-})
-
-usernameSignupInput.addEventListener('change',(e)=>{
-    newUser.username=e.target.value;
-})
-
-passwordSignupInput.addEventListener('change',(e)=>{
-    oldUser.password=e.target.value;
-})
-
-usernameLoginInput.addEventListener('change',(e)=>{
-    oldUser.username=e.target.value;
-})
 
 const resetOldUser=()=>{
     oldUser={
@@ -122,7 +100,7 @@ const checkEmptyInputs=(type)=>{
         if(oldUser.username=='' || oldUser.password==''){
             return true
         }
-    }else{
+    }else if(type=='signup'){
         if(newUser.username=='' || newUser.name==''||newUser.password==''){
             return true
         }
@@ -184,6 +162,28 @@ const resetErrors=()=>{
     loginError.innerHTML='';
     signupError.innerHTML='';
 }
+
+usernameLoginInput.addEventListener('change',(e)=>{
+    oldUser.username=e.target.value;
+})
+
+passwordLoginInput.addEventListener('change',(e)=>{
+    oldUser.password=e.target.value;
+})
+
+nameSignupInput.addEventListener('change',(e)=>{
+    newUser.name=e.target.value;
+})
+
+usernameSignupInput.addEventListener('change',(e)=>{
+    newUser.username=e.target.value;
+})
+
+passwordSignupInput.addEventListener('change',(e)=>{
+    newUser.password=e.target.value;
+})
+
+
 
 
 loginBtn.addEventListener('click',login)

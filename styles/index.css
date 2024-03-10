@@ -36,7 +36,7 @@ header button{
     justify-content: center;
 }
 
-header>img{
+header img{
     width: 150px;
     border-radius: 50%;
 }
@@ -195,6 +195,9 @@ form input{
     display: none;
 }
 
+.user-info p{
+    font-size: 15px;
+}
 
 @media (max-width:930px){
     header span{
@@ -246,6 +249,10 @@ form input{
     }
     .finances-container>div i{
         font-size: 10px;
+    }
+
+    .user-info p{
+        font-size: 9px;
     }
     
    
