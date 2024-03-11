@@ -108,16 +108,33 @@ const checkEmptyInputs=(type)=>{
     return false;
 }
 
+console.log(allUsers);
 const signUp=()=>{
+    
     
     if(checkEmptyInputs('signup')){
         displaySignupError('please fil empty fields')
     }else{
+        let eligible=false;
+        for(let i = 0;i<allUsers.length;i++){
+            if (newUser.username.toLowerCase()==allUsers[i].username.toLowerCase()){
+                eligible=false;
+                break;
+            }
+            else{
+                eligible=true;
+        }
+           
+    }
+    if(eligible){
         allUsers.push(newUser)
         window.localStorage.setItem('session',JSON.stringify(newUser));
         window.localStorage.setItem('users',JSON.stringify(allUsers));
         window.location.assign('/')
-    }
+        }else{
+            displaySignupError('username already taken')
+        }
+}
 }
 
 

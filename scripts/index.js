@@ -47,7 +47,7 @@ let confirmEdit={};
 const fetchCurrencies=async()=>{
 
     try {
-        const res = await fetch('https://rich-erin-angler-hem.cyclic.app/students/available');
+        const res = await fetch('https://dull-pink-sockeye-tie.cyclic.app/students/available');
         currencies=await res.json();
     } catch (error) {
         console.log(error);
@@ -80,7 +80,7 @@ const setActiveCurrency=(btns)=>{
 const convertAmount=async(from,to,amount)=>{
     const data={"from":from,"to":to,"amount":amount}
     try {
-        const res = await fetch('https://rich-erin-angler-hem.cyclic.app/students/convert',
+        const res = await fetch('https://dull-pink-sockeye-tie.cyclic.app/students/convert',
         {
             method:"POST",
             headers:{
